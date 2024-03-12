@@ -33,10 +33,6 @@
             <th scope="row">Şifre</th>
             <td><?= $userInfo['sifre'] ?? '' ?></td>
         </tr>
-
-        <tr>
-            <td><a href="<?= base_url('logout') ?>">Çıkış yap</a> </td>
-        </tr>
     </tbody>
 </table>
 </body>
