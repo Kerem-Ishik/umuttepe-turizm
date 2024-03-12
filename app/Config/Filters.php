@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use App\Filters\AlreadyLoggedInFilter;
+use App\Filters\AuthCheckFilter;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -24,6 +26,8 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'AuthCheck' => AuthCheckFilter::class,
+        'AlreadyLoggedIn' => AlreadyLoggedInFilter::class,
     ];
 
     /**
