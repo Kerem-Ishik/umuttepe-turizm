@@ -1,127 +1,124 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= ($userInfo['ad'] ?? '') . ' ' . ($userInfo['soyadi'] ?? '') ?></title>
+    <?php /** @var array $userInfo */  ?>
+    <title><?= $userInfo['ad'] . ' ' . $userInfo['soyadi'] ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-        /* Custom CSS */
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
-            padding: 20px;
         }
 
-        table {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+        #navigation {
+            width: 38rem;
         }
 
-        th, td {
-            padding: 10px;
+        #e_posta {
+            user-select: none;
         }
 
         #map {
-            height: 300px;
+            height: 22rem;
             width: 100%;
             margin-top: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        #distance {
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
-<table class="table table-striped">
-    <tbody>
-        <tr>
-            <th scope="row">TCKN</th>
-            <td><?= $userInfo['kimlik_no'] ?? '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row">Ad</th>
-            <td><?= $userInfo['ad'] ?? '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row">Soyadı</th>
-            <td><?= $userInfo['soyadi'] ?? '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row">Telefon No</th>
-            <td><?= $userInfo['telefon_no'] ?? '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row">E-posta</th>
-            <td><?= $userInfo['e_posta'] ?? '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row">Şifre</th>
-            <td><?= $userInfo['sifre'] ?? '' ?></td>
-        </tr>
-        <tr>
-            <td><a href="<?= base_url('logout') ?>">Çıkış yap</a></td>
-        </tr>
-    </tbody>
-</table>
-<div>
-    <label for="origin">Nereden:</label>
-    <input id="origin" type="text" placeholder="İl veya İlçe adı yazın" value="Istanbul">
-</div>
-<div>
-    <label for="destination">Nereye:</label>
-    <input id="destination" type="text" placeholder="İl veya İlçe adı yazın" value="Ankara">
-</div>
-<div id="map"></div>
-<p id="distance"></p>
+<header>
+    <nav class="navbar w-100 px-2 shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand">Umuttepe Turizm</a>
+
+            <div class="d-flex gap-2 align-items-center">
+                <span id="e_posta"><?= $userInfo['e_posta'] ?></span>
+                <a role="button" href="<?= base_url('logout') ?>" class="btn btn-danger">Çıkış yap</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="p-4">
+    <div id="navigation" class="d-flex flex-column">
+        <label for="origin">Nereden</label>
+        <select id="origin" class="form-select mb-3">
+            <option selected disabled>Seçiniz</option>
+            <option value="İstanbul">İstanbul</option>
+            <option value="Ankara">Ankara</option>
+            <option value="İzmir">İzmir</option>
+            <option value="Antalya">Antalya</option>
+        </select>
+        <label for="destination">Nereye</label>
+        <select id="destination" class="form-select">
+            <option selected disabled>Seçiniz</option>
+        </select>
+        <div id="map"></div>
+        <h4 id="distance" class="mt-3 align-self-center"></h4>
+    </div>
+</main>
+
 <script>
     function initMap() {
-        var directionsService = new google.maps.DirectionsService();
-        var directionsRenderer = new google.maps.DirectionsRenderer();
-        var map = new google.maps.Map(document.getElementById('map'), {
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 7,
-            center: {lat: 41.85, lng: -87.65}
+            center: {lat: 40.18, lng: 30.26},
+            disableDefaultUI: true,
         });
         directionsRenderer.setMap(map);
 
-        var originInput = document.getElementById('origin');
-        var destinationInput = document.getElementById('destination');
-        var originAutocomplete = new google.maps.places.Autocomplete(originInput);
-        var destinationAutocomplete = new google.maps.places.Autocomplete(destinationInput);
+        const originInput = document.getElementById('origin');
+        const destinationInput = document.getElementById('destination');
 
-        var onChangeHandler = function() {
-            calculateAndDisplayRoute(directionsService, directionsRenderer);
+        /** @param {InputEvent} event */
+        const onOriginChange = (event) => {
+            if (event.target.value === "İstanbul") {
+                destinationInput.innerHTML =
+                    "<option selected disabled>Seçiniz</option>" +
+                    "<option value='Ankara'>Ankara</option>" +
+                    "<option value='İzmir'>İzmir</option>" +
+                    "<option value='Antalya'>Antalya</option>"
+            } else if (event.target.value === 'Ankara') {
+                destinationInput.innerHTML =
+                    "<option selected disabled>Seçiniz</option>" +
+                    "<option value='İstanbul'>İstanbul</option>" +
+                    "<option value='İzmir'>İzmir</option>" +
+                    "<option value='Antalya'>Antalya</option>"
+            } else if (event.target.value === 'İzmir') {
+                destinationInput.innerHTML =
+                    "<option selected disabled>Seçiniz</option>" +
+                    "<option value='İstanbul'>İstanbul</option>" +
+                    "<option value='Ankara'>Ankara</option>" +
+                    "<option value='Antalya'>Antalya</option>"
+            } else if (event.target.value === 'Antalya') {
+                destinationInput.innerHTML =
+                    "<option selected disabled>Seçiniz</option>" +
+                    "<option value='İstanbul'>İstanbul</option>" +
+                    "<option value='Ankara'>Ankara</option>" +
+                    "<option value='İzmir'>İzmir</option>"
+            }
         };
-        originInput.addEventListener('change', onChangeHandler);
-        destinationInput.addEventListener('change', onChangeHandler);
 
-        calculateAndDisplayRoute(directionsService, directionsRenderer);
+        originInput.addEventListener('change', onOriginChange);
+        destinationInput.addEventListener('change', () => calculateAndDisplayRoute(directionsService, directionsRenderer));
     }
 
     function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-        var origin = document.getElementById('origin').value;
-        var destination = document.getElementById('destination').value;
-        var request = {
+        const origin = document.getElementById('origin').value;
+        const destination = document.getElementById('destination').value;
+        const request = {
             origin: origin,
             destination: destination,
             travelMode: 'DRIVING'
         };
         directionsService.route(request, function(result, status) {
-            if (status == 'OK') {
+            if (status === 'OK') {
                 directionsRenderer.setDirections(result);
                 var distance = result.routes[0].legs[0].distance.text;
                 document.getElementById('distance').innerHTML = 'Mesafe: ' + distance;
