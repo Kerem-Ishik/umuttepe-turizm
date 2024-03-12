@@ -113,7 +113,8 @@ class AuthController extends BaseController
                 return redirect()->back()->with('fail', 'Bir sorun var');
             }
             else {
-                return redirect()->to(base_url('register'))->with('success', 'Başarıyla kaydedildi');
+                session()->set('loggedUser', $userModel->getInsertID());
+                return redirect()->to(base_url('/'));
             }
         }
     }
@@ -160,5 +161,11 @@ class AuthController extends BaseController
                 return redirect()->to(base_url('/'));
             }
         }
+    }
+
+    public function logout(): RedirectResponse
+    {
+        session()->remove('loggedUser');
+        return redirect()->to(base_url('login?access=out'))->with('fail', 'Çıkış yaptınız');
     }
 }
