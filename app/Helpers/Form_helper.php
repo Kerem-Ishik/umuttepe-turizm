@@ -2,12 +2,12 @@
 
 use CodeIgniter\Validation\Validation;
 
-function display_error(Validation $validation, string $field): bool|string
+function display_error(Validation|array $validation, string $field): bool|string
 {
-    if ($validation->hasError($field)) {
-        return $validation->getError($field);
+    if ($validation instanceof Validation) {
+        return $validation->hasError($field) ? $validation->getError($field) : false;
     }
     else {
-        return false;
+        return $validation[$field] ?? false;
     }
 }
