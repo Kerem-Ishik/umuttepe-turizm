@@ -38,17 +38,17 @@
     </nav>
 </header>
 
-<main class="p-4 d-flex flex-column flex-fill align-items-center justify-content-center">
-    <div class="card p-2 shadow-sm">
-        <h4>Aranan</h4>
-        <p>Kalkış: <?= session()->get('data')['kalkis'] ?></p>
-        <p>Varış: <?= session()->get('data')['varis'] ?></p>
-        <p>Gidiş tipi: <?= session()->get('data')['gidis_tipi'] ?></p>
-        <p>Gidiş tarihi: <?= session()->get('data')['gidis_tarihi'] ?></p>
-        <?php if (session()->get('data')['gidis_tipi'] === 'gidis_donus') : ?>
-            <p>Dönüş tarihi: <?= session()->get('data')['donus_tarihi'] ?></p>
-        <?php endif ?>
-    </div>
+<main class="p-4 d-flex flex-column gap-4 flex-fill align-items-center justify-content-center">
+    <?php foreach (session()->get('data') as $sefer): ?>
+        <div class="card p-2 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title"><?= $sefer['kalkis'] ?> - <?= $sefer['varis'] ?></h5>
+                <p class="card-text">Kalkış: <?= $sefer['tarih'] ?></p>
+                <p class="card-text">Süre: <?= $sefer['sure'] ?> saat</p>
+                <a href="<?= base_url('bilet-al/' . $sefer['id']) ?>" class="btn btn-primary">Bilet al</a>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
