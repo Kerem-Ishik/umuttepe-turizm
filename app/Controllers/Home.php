@@ -70,7 +70,81 @@ class Home extends BaseController
             $values['donus_tarihi'] = $this->request->getPost('donus_tarihi');
         }
 
-        session()->set('data', $values);
+        $sql = 'SELECT * FROM sefer WHERE kalkis = ? AND varis = ?';
+
+        $db = db_connect();
+
+        $query = $db->query($sql, [$values['kalkis'], $values['varis']]);
+
+        $seferler = $query->getResultArray();
+
+        // Filter the results based on the departure date
+        // Check if the sefer's date starts with the departure date
+        $seferler = array_filter($seferler, function ($sefer) use ($values) {
+            return str_starts_with($sefer['tarih'], $values['gidis_tarihi']);
+        });
+
+        if ($seferler === []) {
+            $SQL = 'INSERT INTO sefer (kalkis, varis, tarih) VALUES (?, ?, ?)';
+
+            $sefer_values = [
+                ['İstanbul', 'Ankara'],
+                ['Ankara', 'İstanbul'],
+                ['İstanbul', 'İzmir'],
+                ['İzmir', 'İstanbul'],
+                ['İstanbul', 'Antalya'],
+                ['Antalya', 'İstanbul'],
+                ['Ankara', 'İzmir'],
+                ['İzmir', 'Ankara'],
+                ['Ankara', 'Antalya'],
+                ['Antalya', 'Ankara'],
+                ['İzmir', 'Antalya'],
+                ['Antalya', 'İzmir']
+            ];
+
+            $sefer_hours = [
+                '00:00', '08:00', '16:00'
+            ];
+
+            foreach ($sefer_values as $sefer) {
+                foreach ($sefer_hours as $hour) {
+                    $db->query($SQL, [$sefer[0], $sefer[1], $values['gidis_tarihi'] . ' ' . $hour]);
+                }
+            }
+
+            $query = $db->query($sql, [$values['kalkis'], $values['varis']]);
+
+            $seferler = $query->getResultArray();
+
+            $seferler = array_filter($seferler, function ($sefer) use ($values) {
+                return str_starts_with($sefer['tarih'], $values['gidis_tarihi']);
+            });
+        }
+
+        foreach ($seferler as $key => $sefer) {
+            if (($sefer['kalkis'] == 'İstanbul' && $sefer['varis'] == 'Ankara') || ($sefer['kalkis'] == 'Ankara' && $sefer['varis'] == 'İstanbul')) {
+                $seferler[$key]['sure'] = 5;
+            }
+            else if (($sefer['kalkis'] == 'İstanbul' && $sefer['varis'] == 'İzmir') || ($sefer['kalkis'] == 'İzmir' && $sefer['varis'] == 'İstanbul')) {
+                $seferler[$key]['sure'] = 7;
+            }
+            else if (($sefer['kalkis'] == 'İstanbul' && $sefer['varis'] == 'Antalya') || ($sefer['kalkis'] == 'Antalya' && $sefer['varis'] == 'İstanbul')) {
+                $seferler[$key]['sure'] = 6;
+            }
+            else if (($sefer['kalkis'] == 'Ankara' && $sefer['varis'] == 'İzmir') || ($sefer['kalkis'] == 'İzmir' && $sefer['varis'] == 'Ankara')) {
+                $seferler[$key]['sure'] = 6;
+            }
+            else if (($sefer['kalkis'] == 'Ankara' && $sefer['varis'] == 'Antalya') || ($sefer['kalkis'] == 'Antalya' && $sefer['varis'] == 'Ankara')) {
+                $seferler[$key]['sure'] = 4;
+            }
+            else if (($sefer['kalkis'] == 'İzmir' && $sefer['varis'] == 'Antalya') || ($sefer['kalkis'] == 'Antalya' && $sefer['varis'] == 'İzmir')) {
+                $seferler[$key]['sure'] = 5;
+            }
+        }
+
+        session()->set('data', $seferler);
+
+        $db->close();
 
         return redirect()->to(base_url('seferler'));
     }
