@@ -26,6 +26,12 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+        @media (max-width: 992px) {
+            #map {
+                height: 18rem;
+            }
+        }
+
         .navbar-brand {
             user-select: none;
             cursor: pointer;
