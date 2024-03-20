@@ -19,14 +19,11 @@ class KoltukController extends BaseController
 
         $biletModel = new BiletModel();
 
-        $gidisKoltuklar = array_column($biletModel->where('seferId', $gidisId)->findAll(), 'koltuk_no');
-
-        session()->set('gidisKoltuklar', $gidisKoltuklar);
+        session()->set('gidisBiletler', $biletModel->where('seferId', $gidisId)->findAll());
         session()->set('gidisId', $gidisId);
 
         if ($donusId) {
-            $donusKoltuklar = array_column($biletModel->where('seferId', $donusId)->findAll(), 'koltuk_no');
-            session()->set('donusKoltuklar', $donusKoltuklar);
+            session()->set('donusBiletler', $biletModel->where('seferId', $donusId)->findAll());
             session()->set('donusId', $donusId);
         }
 
