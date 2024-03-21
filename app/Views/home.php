@@ -50,9 +50,7 @@
                         <option value="Antalya">Antalya</option>
                     </select>
                     <span class="text-danger">
-                        <?php if (! empty(session()->getFlashdata('validation'))) : ?>
-                            <?= display_error(session()->getFlashdata('validation'), 'kalkis') ?>
-                        <?php endif ?>
+                        <?= isset($validation) ? display_error($validation, 'kalkis') : '' ?>
                     </span>
                 </div>
 
@@ -62,9 +60,7 @@
                         <option selected disabled>Seçiniz</option>
                     </select>
                     <span class="text-danger">
-                        <?php if (! empty(session()->getFlashdata('validation'))) : ?>
-                            <?= display_error(session()->getFlashdata('validation'), 'varis') ?>
-                        <?php endif ?>
+                        <?= isset($validation) ? display_error($validation, 'varis') : '' ?>
                     </span>
                 </div>
 
@@ -85,9 +81,7 @@
                         <label for="gidis_tarihi">Gidiş Tarihi</label>
                         <input type="date" name="gidis_tarihi" id="gidis_tarihi" class="form-control" min="<?= date('Y-m-d') ?>"/>
                         <span class="text-danger">
-                            <?php if (! empty(session()->getFlashdata('validation'))) : ?>
-                                <?= display_error(session()->getFlashdata('validation'), 'gidis_tarihi') ?>
-                            <?php endif ?>
+                            <?= isset($validation) ? display_error($validation, 'gidis_tarihi') : '' ?>
                         </span>
                     </div>
 
@@ -99,10 +93,8 @@
 
                 <div>
                     <span class="text-danger">
-                            <?php if (! empty(session()->getFlashdata('validation'))) : ?>
-                                <?= display_error(session()->getFlashdata('validation'), 'donus_tarihi') ?>
-                            <?php endif ?>
-                        </span>
+                        <?= isset($validation) ? display_error($validation, 'donus_tarihi') : '' ?>
+                    </span>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Sefer ara</button>
