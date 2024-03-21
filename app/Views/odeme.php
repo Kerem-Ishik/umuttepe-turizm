@@ -16,7 +16,7 @@
 <body>
 <?php include('header.php'); ?>
 
-<main class="d-flex flex-column justify-content-center h-100 flex-fill">
+<main class="d-flex flex-column justify-content-center flex-fill">
     <div class="container mt-3">
         <table class="table table-striped">
             <thead>
@@ -106,9 +106,7 @@
         </table>
     </div>
 
-    <div class="d-flex justify-content-center">
-        <?php include('ccForm.php'); ?>
-    </div>
+    <?php include('ccForm.php'); ?>
 
     <button type="button" id="approve" class="btn btn-primary align-self-center">Onayla</button>
 </main>
