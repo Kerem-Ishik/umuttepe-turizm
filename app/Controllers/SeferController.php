@@ -22,7 +22,7 @@ class SeferController extends BaseController
     /**
      * @throws ReflectionException
      */
-    public function seferAra(): RedirectResponse
+    public function seferAra(): string|RedirectResponse
     {
         $validation = $this->validate([
             'kalkis' => [
@@ -46,9 +46,9 @@ class SeferController extends BaseController
         ]);
 
         if (! $validation) {
-            session()->setFlashdata('validation', $this->validator);
-
-            return redirect()->to(base_url('/'))->withInput();
+            return view('home', [
+                'validation' => $this->validator
+            ]);
         }
 
         // Check if the return date is before the departure date
