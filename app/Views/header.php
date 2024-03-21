@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarToggleContent">
                 <div class="d-flex flex-row justify-content-center justify-content-lg-end w-100">
                     <div class="d-flex flex-column flex-lg-row gap-2 align-items-center">
-                        <span id="e_posta" class="navbar-text"><?= session()->get('userInfo')['e_posta'] ?></span>
+                        <a id="e_posta" href="<?= base_url('profile') ?>" class="navbar-link"><?= session()->get('userInfo')['e_posta'] ?></a>
                         <a role="button" href="<?= base_url('logout') ?>" class="btn btn-danger">Çıkış yap</a>
                     </div>
                 </div>
