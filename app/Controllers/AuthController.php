@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Libraries\Hash;
+use App\Models\BiletModel;
+use App\Models\SeferModel;
 use App\Models\UserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 use ReflectionException;
@@ -167,5 +169,76 @@ class AuthController extends BaseController
     {
         session()->remove('loggedUser');
         return redirect()->to(base_url('login?access=out'))->with('fail', 'Çıkış yaptınız');
+    }
+
+    public function profile(): string
+    {
+        return view('profile');
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function update(): RedirectResponse
+    {
+        $validation = $this->validate([
+            'sifre' => [
+                'rules' => 'required|min_length[8]|max_length[50]',
+                'errors' => [
+                    'required' => 'Şifre gereklidir',
+                    'min_length' => 'Minimum 8 karakter',
+                    'max_length' => 'Maksimum 50 karakter',
+                ],
+            ],
+            'sifre_tekrar' => [
+                'rules' => 'required|min_length[8]|max_length[50]|matches[sifre]',
+                'errors' => [
+                    'required' => 'Şifre tekrarı gereklidir',
+                    'min_length' => 'Minimum 8 karakter',
+                    'max_length' => 'Maksimum 50 karakter',
+                    'matches' => 'Şifre tekrarı şifrenizle uyuşmuyor'
+                ],
+            ]
+        ]);
+
+        if (! $validation) {
+            session()->setFlashdata('validation', $this->validator);
+
+            return redirect()->to(base_url('profile'))->withInput();
+        }
+        else {
+            $userModel = new UserModel();
+
+            $userModel->update(session()->get('loggedUser'), [
+                'sifre' => Hash::make($this->request->getPost('sifre')),
+            ]);
+
+            session()->setFlashdata('success', 'Şifre güncellendi');
+
+            return redirect()->to(base_url('profile'))->withInput();
+        }
+    }
+
+    public function biletler(): string
+    {
+        $biletModel = new BiletModel();
+        $seferModel = new SeferModel();
+
+        $biletler = $biletModel->where('userId', session()->get('loggedUser'))->findAll();
+
+        foreach ($biletler as $key => $bilet) {
+            $sefer = $seferModel->find($bilet['seferId']);
+            $biletler[$key]['tarih'] = $sefer['tarih'];
+            $biletler[$key]['sefer'] = $sefer['kalkis'] . '-' . $sefer['varis'];
+        }
+
+        return view('biletler', ['biletler' => $biletler]);
+    }
+
+    public function biletSil(int $id): void
+    {
+        $biletModel = new BiletModel();
+
+        $biletModel->delete($id);
     }
 }
