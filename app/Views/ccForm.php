@@ -417,21 +417,41 @@
     </div>
     <div class="form-container">
         <div class="field-container form-floating">
-            <input id="name" class="form-control" placeholder="Ad" maxlength="20" type="text">
-            <label for="name">Ad</label>
+            <input id="cardholder" class="form-control" placeholder="Ad" maxlength="20" type="text" value="<?= set_value('cardholder') ?>">
+            <label for="cardholder">Ad</label>
+            <span class="text-danger">
+                <?php if (! empty(session()->getFlashdata('validation'))) : ?>
+                    <?= display_error(session()->getFlashdata('validation'), 'cardholder') ?>
+                <?php endif; ?>
+            </span>
         </div>
         <div class="field-container form-floating">
-            <input id="cardnumber" class="form-control" placeholder="Kart numarası" type="text" pattern="[0-9]*" inputmode="numeric">
+            <input id="cardnumber" class="form-control" placeholder="Kart numarası" type="text" pattern="[0-9]*" inputmode="numeric" value="<?= set_value('cardnumber') ?>">
             <label for="cardnumber">Kart numarası</label>
+            <span class="text-danger">
+                <?php if (! empty(session()->getFlashdata('validation'))) : ?>
+                    <?= display_error(session()->getFlashdata('validation'), 'cardnumber') ?>
+                <?php endif; ?>
+            </span>
             <svg id="ccicon" class="ccicon" width="750" height="471" viewBox="0 0 750 471" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
         </div>
         <div class="field-container form-floating">
-            <input id="expirationdate" class="form-control" placeholder="Son kullanım (mm/yy)" type="text" pattern="[0-9]*" inputmode="numeric">
+            <input id="expirationdate" class="form-control" placeholder="Son kullanım (mm/yy)" type="text" pattern="[0-9]*" inputmode="numeric" value="<?= set_value('expirationdate') ?>">
             <label for="expirationdate">Son kullanım (mm/yy)</label>
+            <span class="text-danger">
+                <?php if (! empty(session()->getFlashdata('validation'))) : ?>
+                    <?= display_error(session()->getFlashdata('validation'), 'expirationdate') ?>
+                <?php endif; ?>
+            </span>
         </div>
         <div class="field-container form-floating">
-            <input id="securitycode" class="form-control" placeholder="Güvenlik kodu" type="text" maxlength="3" pattern="[0-9]*" inputmode="numeric">
+            <input id="securitycode" class="form-control" placeholder="Güvenlik kodu" type="text" maxlength="3" pattern="[0-9]*" inputmode="numeric" value="<?= set_value('securitycode') ?>">
             <label for="securitycode">Güvenlik kodu</label>
+            <span class="text-danger">
+                <?php if (! empty(session()->getFlashdata('validation'))) : ?>
+                    <?= display_error(session()->getFlashdata('validation'), 'securitycode') ?>
+                <?php endif; ?>
+            </span>
         </div>
     </div>
 </div>
@@ -439,7 +459,7 @@
 <script>
     window.onload = function () {
 
-        const name = document.getElementById('name');
+        const name = document.getElementById('cardholder');
         const cardnumber = document.getElementById('cardnumber');
         const expirationdate = document.getElementById('expirationdate');
         const securitycode = document.getElementById('securitycode');
