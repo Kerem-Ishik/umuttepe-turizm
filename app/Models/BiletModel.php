@@ -16,6 +16,7 @@ class BiletModel extends Model
         'alim_tarihi',
         'ad',
         'soyadi',
-        'cinsiyet'
+        'cinsiyet',
+        'pnr',
     ];
 }
