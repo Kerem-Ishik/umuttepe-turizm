@@ -11,7 +11,7 @@ use ReflectionException;
 
 class AuthController extends BaseController
 {
-    protected $helpers = ['Form', 'url'];
+    protected $helpers = ['Form', 'url', 'form'];
 
     public function login(): string
     {
