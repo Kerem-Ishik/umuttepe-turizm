@@ -238,4 +238,20 @@ class AuthController extends BaseController
 
         $biletModel->delete($id);
     }
+
+    public function biletKontrol(string $pnr): string
+    {
+        $biletModel = new BiletModel();
+        $seferModel = new SeferModel();
+
+        $bilet = $biletModel->where('pnr', $pnr)->first();
+
+        if (! $bilet) {
+            return view('biletKontrol', ['error' => 'Bilet bulunamadı']);
+        }
+
+        $sefer = $seferModel->find($bilet['seferId']);
+
+        return view('biletKontrol', ['bilet' => $bilet, 'sefer' => $sefer]);
+    }
 }

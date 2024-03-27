@@ -29,6 +29,7 @@ $routes->post('koltukSecimi', [KoltukController::class, 'koltukSecimi']);
 $routes->post('odemeAl', [OdemeController::class, 'odemeAl']);
 $routes->post('odemeKontrol', [OdemeController::class, 'odemeKontrol']);
 $routes->delete('bilet-sil/(:num)', [AuthController::class, 'biletSil']);
+$routes->get('bilet-kontrol/(:segment)', [AuthController::class, 'biletKontrol']);
 
 $routes->group('', ['filter' => 'AlreadyLoggedIn'], function (RouteCollection $routes) {
     $routes->get('login', [AuthController::class, 'login']);
