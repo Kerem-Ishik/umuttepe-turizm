@@ -28,6 +28,7 @@ class Filters extends BaseConfig
         'secureheaders' => SecureHeaders::class,
         'AuthCheck' => AuthCheckFilter::class,
         'AlreadyLoggedIn' => AlreadyLoggedInFilter::class,
+        'AdminCheck' => \App\Filters\AdminCheckFilter::class,
     ];
 
     /**

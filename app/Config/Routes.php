@@ -6,6 +6,8 @@ use App\Controllers\KoltukController;
 use App\Controllers\OdemeController;
 use App\Controllers\SeferController;
 use CodeIgniter\Router\RouteCollection;
+use App\Controllers\AdminController;
+
 
 /**
  * @var RouteCollection $routes
@@ -20,6 +22,10 @@ $routes->group('', ['filter' => 'AuthCheck'], function (RouteCollection $routes)
     $routes->get('profile/biletler', [AuthController::class, 'biletler']);
 });
 
+$routes->group('', ['filter' => 'AdminCheck'], function (RouteCollection $routes) {
+    $routes->get('admin-panel', [AdminController::class, 'adminPanel']);
+});
+
 $routes->get('logout', [AuthController::class, 'logout']);
 $routes->post('save', [AuthController::class, 'save']);
 $routes->post('check', [AuthController::class, 'check']);
@@ -29,7 +35,7 @@ $routes->post('koltukSecimi', [KoltukController::class, 'koltukSecimi']);
 $routes->post('odemeAl', [OdemeController::class, 'odemeAl']);
 $routes->post('odemeKontrol', [OdemeController::class, 'odemeKontrol']);
 $routes->delete('bilet-sil/(:num)', [AuthController::class, 'biletSil']);
-$routes->get('bilet-kontrol/(:segment)', [AuthController::class, 'biletKontrol']);
+$routes->post('bilet-duzenle/(:num)', [AdminController::class, 'biletEdit']);
 
 $routes->group('', ['filter' => 'AlreadyLoggedIn'], function (RouteCollection $routes) {
     $routes->get('login', [AuthController::class, 'login']);
