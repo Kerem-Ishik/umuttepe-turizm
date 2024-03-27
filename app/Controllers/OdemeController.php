@@ -14,7 +14,7 @@ use ReflectionException;
 
 class OdemeController extends BaseController
 {
-    protected $helpers = ['form'];
+    protected $helpers = ['Form'];
 
     public function index(): string
     {

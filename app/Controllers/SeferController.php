@@ -9,7 +9,7 @@ use ReflectionException;
 
 class SeferController extends BaseController
 {
-    protected $helpers = ['form', 'url'];
+    protected $helpers = ['Form', 'url'];
 
     public function index(): string
     {
