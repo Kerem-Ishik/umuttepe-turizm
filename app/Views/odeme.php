@@ -59,13 +59,13 @@
                         $biletUcreti = $ucret;
 
                         if ($secim->tarife == 'tam') {
-                            $secim->tarife = 'Tam';
+                            $tarife = 'Tam';
 
                         } else if ($secim->tarife == 'guvenlik') {
-                            $secim->tarife = "Ücretiz";
+                            $tarife = "Ücretiz";
                             $biletUcreti = 0;
                         } else {
-                            $secim->tarife = '%15 indirim';
+                            $tarife = '%15 indirim';
                             $biletUcreti = $ucret * 0.75;
                         }
 
@@ -80,7 +80,7 @@
                             echo "<td>$tarih</td>";
                             echo "<td>$secim->koltuk_no</td>";
                             echo "<td hidden='hidden'>$secim->cinsiyet</td>";
-                            echo "<td>$secim->tarife</td>";
+                            echo "<td>$tarife</td>";
                             echo "<td>$biletUcreti TL</td>";
                         echo "</tr>";
                     }
@@ -115,23 +115,33 @@
     document.getElementById('approve').addEventListener('click', () => {
         const biletler = document.querySelectorAll('.bilet');
 
-        biletler.forEach(bilet => {
-            const ad = bilet.children[1].innerText;
-            const soyad = bilet.children[2].innerText;
-            const seferId = bilet.children[4].innerText;
-            const koltukNo = bilet.children[6].innerText;
-            const cinsiyet = bilet.children[7].innerText;
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '<?= base_url('odemeKontrol') ?>';
+        form.hidden = true;
 
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '<?= base_url('odemeYap') ?>', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send('ad=' + ad + '&soyadi=' + soyad + '&seferId=' + seferId + '&koltukNo=' + koltukNo + '&cinsiyet=' + cinsiyet);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    location.href = '<?= base_url('onay') ?>';
-                }
-            };
-        });
+        form.appendChild(document.createElement('input'));
+        form.lastChild.name = 'cardholder';
+        form.lastChild.value = document.getElementById('cardholder').value;
+
+        form.appendChild(document.createElement('input'));
+        form.lastChild.name = 'cardnumber';
+        form.lastChild.value = document.getElementById('cardnumber').value;
+
+        form.appendChild(document.createElement('input'));
+        form.lastChild.name = 'expirationdate';
+        form.lastChild.value = document.getElementById('expirationdate').value;
+
+        form.appendChild(document.createElement('input'));
+        form.lastChild.name = 'securitycode';
+        form.lastChild.value = document.getElementById('securitycode').value;
+
+        form.appendChild(document.createElement('input'));
+        form.lastChild.name = 'biletler';
+        form.lastChild.value = JSON.stringify(Array.from(biletler).map(bilet => Array.from(bilet.children).map(td => td.innerText)));
+
+        document.body.appendChild(form);
+        form.submit();
     });
 </script>
 </body>
