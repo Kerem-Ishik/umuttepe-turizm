@@ -23,7 +23,8 @@ $routes->group('', ['filter' => 'AuthCheck'], function (RouteCollection $routes)
 });
 
 $routes->group('', ['filter' => 'AdminCheck'], function (RouteCollection $routes) {
-    $routes->get('admin-panel', [AdminController::class, 'adminPanel']);
+    $routes->get('admin', [AdminController::class, 'index']);
+    $routes->get('admin/biletler', [AdminController::class, 'biletler']);
 });
 
 $routes->get('logout', [AuthController::class, 'logout']);
@@ -36,6 +37,8 @@ $routes->post('odemeAl', [OdemeController::class, 'odemeAl']);
 $routes->post('odemeKontrol', [OdemeController::class, 'odemeKontrol']);
 $routes->delete('bilet-sil/(:num)', [AuthController::class, 'biletSil']);
 $routes->post('bilet-duzenle/(:num)', [AdminController::class, 'biletEdit']);
+$routes->post('user-duzenle/(:num)', [AdminController::class, 'userEdit']);
+$routes->delete('user-sil/(:num)', [AdminController::class, 'userDelete']);
 
 $routes->group('', ['filter' => 'AlreadyLoggedIn'], function (RouteCollection $routes) {
     $routes->get('login', [AuthController::class, 'login']);
