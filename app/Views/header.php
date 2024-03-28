@@ -21,7 +21,14 @@
             <div class="collapse navbar-collapse" id="navbarToggleContent">
                 <div class="d-flex flex-row justify-content-center justify-content-lg-end w-100">
                     <div class="d-flex flex-column flex-lg-row gap-2 align-items-center">
-                        <a id="e_posta" href="<?= base_url('profile') ?>" class="navbar-link"><?= session()->get('userInfo')['e_posta'] ?></a>
+                        <?php if (session()->get('userInfo')['id'] == '1'): ?>
+                            <div class="card p-2 bg-body-tertiary">
+                                <a href="<?= base_url('admin') ?>" class="nav-link">Admin Panel</a>
+                            </div>
+                        <?php endif; ?>
+                        <div class="card p-2 bg-body-tertiary">
+                            <a id="e_posta" href="<?= base_url('profile') ?>" class="nav-link"><?= session()->get('userInfo')['e_posta'] ?></a>
+                        </div>
                         <a role="button" href="<?= base_url('logout') ?>" class="btn btn-danger">Çıkış yap</a>
                     </div>
                 </div>
