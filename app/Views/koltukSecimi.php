@@ -217,7 +217,6 @@
             <div class="col-md-6">
                 <label for="ad" class="form-label">Ad</label>
                 <input type="text" class="form-control" name="ad" placeholder="John" required>
-
             </div>
             <div class="col-md-6">
                 <label for="soyadi" class="form-label">Soyadı</label>
@@ -292,6 +291,64 @@
         if (donusForms.length === 0 && donusSeats.length > 0) {
             alert('Lütfen dönüş için en az bir koltuk seçiniz.');
             return;
+        }
+
+        // Check if all forms are filled
+        for (let i = 0; i < gidisForms.length; i++) {
+            const form = gidisForms[i];
+            const inputs = form.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select');
+            const alerts = form.querySelectorAll('.text-danger');
+            for (let j = 0; j < alerts.length; j++) {
+                alerts[j].remove();
+            }
+            for (let j = 0; j < inputs.length; j++) {
+                if (!inputs[j].value.trim() && inputs[j].hidden === false) {
+                    const alert = document.createElement('span');
+
+                    alert.classList.add('text-danger');
+
+                    inputs[j].parentElement.appendChild(alert);
+
+                    switch (inputs[j].name) {
+                        case 'ad':
+                            alert.textContent = 'Ad alanı boş bırakılamaz.';
+                            break;
+                        case 'soyadi':
+                            alert.textContent = 'Soyadı alanı boş bırakılamaz.';
+                            break;
+                        case 'dogum_tarihi':
+                            alert.textContent = 'Doğum tarihi alanı boş bırakılamaz.';
+                            break;
+                        case 'cinsiyet':
+                            alert.textContent = 'Cinsiyet alanı boş bırakılamaz.';
+                            break;
+                        case 'tarife':
+                            alert.textContent = 'Tarife alanı boş bırakılamaz.';
+                            break;
+                        case 'kimlik_no':
+                            alert.textContent = 'Kimlik No alanı boş bırakılamaz.';
+                            break;
+                        case 'pasaport':
+                            alert.textContent = 'Pasaport No alanı boş bırakılamaz.';
+                            break;
+                    }
+
+                    return;
+                }
+            }
+        }
+
+        if (donusForms.length > 0) {
+            for (let i = 0; i < donusForms.length; i++) {
+                const form = donusForms[i];
+                const inputs = form.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select');
+                for (let j = 0; j < inputs.length; j++) {
+                    if (!inputs[j].value.trim() && inputs[j].hidden === false) {
+                        alert('Lütfen tüm alanları doldurunuz.');
+                        return;
+                    }
+                }
+            }
         }
 
         const gidisData = [];
