@@ -297,10 +297,12 @@
         for (let i = 0; i < gidisForms.length; i++) {
             const form = gidisForms[i];
             const inputs = form.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select');
+
             const alerts = form.querySelectorAll('.text-danger');
             for (let j = 0; j < alerts.length; j++) {
                 alerts[j].remove();
             }
+
             for (let j = 0; j < inputs.length; j++) {
                 if (!inputs[j].value.trim() && inputs[j].hidden === false) {
                     const alert = document.createElement('span');
@@ -334,6 +336,34 @@
                     }
 
                     return;
+                }
+
+                if (inputs[j].name === 'kimlik_no' && inputs[j].value.length !== 11) {
+                    const alert = document.createElement('span');
+                    alert.classList.add('text-danger');
+                    inputs[j].parentElement.appendChild(alert);
+                    alert.textContent = 'Kimlik No 11 haneli olmalıdır.';
+                    return;
+                }
+
+                if (inputs[j].name === 'pasaport' && inputs[j].value.length !== 9) {
+                    const alert = document.createElement('span');
+                    alert.classList.add('text-danger');
+                    inputs[j].parentElement.appendChild(alert);
+                    alert.textContent = 'Pasaport No 9 haneli olmalıdır.';
+                    return;
+                }
+
+                if (inputs[j].name === 'dogum_tarihi') {
+                    const date = new Date(inputs[j].value);
+                    const now = new Date();
+                    if (date > now) {
+                        const alert = document.createElement('span');
+                        alert.classList.add('text-danger');
+                        inputs[j].parentElement.appendChild(alert);
+                        alert.textContent = 'Doğum tarihi bugünden büyük olamaz.';
+                        return;
+                    }
                 }
             }
         }
