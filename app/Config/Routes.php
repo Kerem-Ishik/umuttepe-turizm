@@ -39,6 +39,7 @@ $routes->delete('bilet-sil/(:num)', [AuthController::class, 'biletSil']);
 $routes->post('bilet-duzenle/(:num)', [AdminController::class, 'biletEdit']);
 $routes->post('user-duzenle/(:num)', [AdminController::class, 'userEdit']);
 $routes->delete('user-sil/(:num)', [AdminController::class, 'userDelete']);
+$routes->get('bilet-kontrol/(:segment)', [AuthController::class, 'biletKontrol']);
 
 $routes->group('', ['filter' => 'AlreadyLoggedIn'], function (RouteCollection $routes) {
     $routes->get('login', [AuthController::class, 'login']);
