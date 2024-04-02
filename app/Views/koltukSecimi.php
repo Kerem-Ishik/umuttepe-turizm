@@ -338,22 +338,6 @@
                     return;
                 }
 
-                if (inputs[j].name === 'kimlik_no' && inputs[j].value.length !== 11) {
-                    const alert = document.createElement('span');
-                    alert.classList.add('text-danger');
-                    inputs[j].parentElement.appendChild(alert);
-                    alert.textContent = 'Kimlik No 11 haneli olmalıdır.';
-                    return;
-                }
-
-                if (inputs[j].name === 'pasaport' && inputs[j].value.length !== 9) {
-                    const alert = document.createElement('span');
-                    alert.classList.add('text-danger');
-                    inputs[j].parentElement.appendChild(alert);
-                    alert.textContent = 'Pasaport No 9 haneli olmalıdır.';
-                    return;
-                }
-
                 if (inputs[j].name === 'dogum_tarihi') {
                     const date = new Date(inputs[j].value);
                     const now = new Date();
